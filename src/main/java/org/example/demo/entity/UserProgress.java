@@ -1,10 +1,12 @@
 package org.example.demo.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Entity
+@Data
 @Table(name = "user_progress")
 public class UserProgress {
     @Id

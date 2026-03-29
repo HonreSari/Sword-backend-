@@ -1,8 +1,14 @@
 package org.example.demo.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "episodes")
 public class Episode {
     @Id
@@ -17,4 +23,8 @@ public class Episode {
     @ManyToOne
     @JoinColumn(name = "series_id")
     private Series series;
+
+    @ManyToOne
+    @JoinColumn(name = "season_id")
+    private Season season;
 }

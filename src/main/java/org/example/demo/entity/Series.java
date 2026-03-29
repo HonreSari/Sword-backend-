@@ -29,7 +29,7 @@ public class Series {
     @Column(name = "cover_image_url", length = 500)
     private String coverImageUrl;               // Main poster image (like in the screenshot)
 
-    @Column(length = 1000)
+    @Column(columnDefinition = "TEXT")
     private String description;                 // Short synopsis shown below title
 
     @Enumerated(EnumType.STRING)
