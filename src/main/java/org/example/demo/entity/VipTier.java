@@ -1,4 +1,5 @@
 package org.example.demo.entity;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,10 +22,10 @@ public class VipTier {
     private Long id;
 
     @Column(nullable = false, unique = true, length = 100)
-    private String name;                    // e.g. "Basic", "Premium", "Ultimate Sword Immortal"
+    private String name;
 
     @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal price;               // Monthly price in USD or CNY
+    private BigDecimal price;
 
     @Column(name = "monthly_credits", nullable = false)
     private int monthlyCredits;
@@ -32,22 +33,13 @@ public class VipTier {
     @Column(length = 500)
     private String description;
 
-    @ElementCollection
-    @CollectionTable(
-            name = "vip_tier_benefits",
-            joinColumns = @JoinColumn(name = "vip_tier_id")
-    )
-    @Column(name = "benefit")
-    private List<String> benefits = new ArrayList<>();
-
-    @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
-    private LocalDateTime updatedAt = LocalDateTime.now();
+    private LocalDateTime updatedAt;
 
-    @PreUpdate
-    public void preUpdate() {
-        this.updatedAt = LocalDateTime.now();
-    }
+    // Relationship with benefits
+    @OneToMany(mappedBy = "vipTier", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<VipTierBenefit> benefits = new ArrayList<>();
 }
