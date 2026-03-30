@@ -67,7 +67,7 @@ public class Series {
             joinColumns = @JoinColumn(name = "series_id")
     )
     @Column(name = "genre")
-    private List<String> genres = new ArrayList<>();   // Action, Adventure, Fantasy, Martial Arts, etc.
+    private List<String> genres = new ArrayList<>();
 
     @Column(name = "total_episodes")
     private Integer totalEpisodes;
@@ -78,7 +78,11 @@ public class Series {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    // Relationship with episodes
     @OneToMany(mappedBy = "series", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Episode> episodes = new ArrayList<>();
+    private List<Season> seasons = new ArrayList<>();
+
+    public void addSeason(Season season) {
+        seasons.add(season);
+        season.setSeries(this);
+    }
 }

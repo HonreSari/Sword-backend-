@@ -21,10 +21,6 @@ public class Episode {
     private String duration;
 
     @ManyToOne
-    @JoinColumn(name = "series_id")
-    private Series series;
-
-    @ManyToOne
     @JoinColumn(name = "season_id")
     private Season season;
 }
