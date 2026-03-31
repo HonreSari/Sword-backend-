@@ -1,9 +1,8 @@
 package org.example.demo.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
-
 import java.time.LocalDateTime;
+import lombok.*;
 
 @Entity
 @Getter
@@ -11,19 +10,19 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "library")
+@Table(name = "user_libraries")
 public class Library {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+  @ManyToOne
+  @JoinColumn(name = "user_id", nullable = false)
+  private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "series_id", nullable = false)
-    private Series series;
+  @ManyToOne
+  @JoinColumn(name = "series_id", nullable = false)
+  private Series series;
 
-    private LocalDateTime addedAt = LocalDateTime.now();
+  private LocalDateTime addedAt = LocalDateTime.now();
 }

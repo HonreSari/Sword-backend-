@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface LibrayRepo extends JpaRepository<Library, Long> {
+  boolean existsByUserIdAndSeriesId(Long userId, Long seriesId);
 }
