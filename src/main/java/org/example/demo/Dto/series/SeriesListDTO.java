@@ -1,5 +1,6 @@
 package org.example.demo.Dto.series;
 
+import java.io.Serializable;
 import java.util.List;
 import org.example.demo.entity.Series;
 
@@ -12,8 +13,10 @@ public record SeriesListDTO(
     String status,
     Integer totalEpisodes,
     List<String> genres
-) {
-    
+) implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     /**
      * Convert Series entity → SeriesListDTO
      * Lightweight version for grid/home page display

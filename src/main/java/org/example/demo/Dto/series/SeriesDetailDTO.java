@@ -1,5 +1,6 @@
 package org.example.demo.Dto.series;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,12 +16,15 @@ public record SeriesDetailDTO(
     String coverImageUrl,
     Double rating,
     List<String> genres,
-    List<SeasonDTO> seasons) {
+    List<SeasonDTO> seasons) implements Serializable {
+
+  private static final long serialVersionUID = 1L;
 
   public record SeasonDTO(
       Integer seasonOrder,
       String seasonName,
-      List<EpisodeListItemDTO> episodes) {
+      List<EpisodeListItemDTO> episodes) implements Serializable {
+    private static final long serialVersionUID = 1L;
     public static SeasonDTO fromEntity(Season season) {
       return new SeasonDTO(
           season.getSeasonOrder(),
