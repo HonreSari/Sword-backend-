@@ -1,11 +1,9 @@
 package org.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
-
 import lombok.*;
 
 @Entity
@@ -30,16 +28,23 @@ public class User {
   @Column(nullable = false)
   private String password; // hashed password
 
-  @Column(name = "credit_balance", nullable = false, precision = 10, scale = 2)
-  private BigDecimal creditBalance = BigDecimal.ZERO;
+  // ✅ KEEP (Optional): Simple credit system for demo
+  // Change BigDecimal → Integer for simplicity unless you need decimals
+  @Column(name = "credit_balance", nullable = false)
+  private Integer creditBalance = 0;
 
-  // Current active VIP Tier (Many-to-One)
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "active_vip_tier_id")
-  private VipTier activeVipTier;
+  // ❌ REMOVE: Complex VIP relationship
+  // @ManyToOne(fetch = FetchType.LAZY)
+  // @JoinColumn(name = "active_vip_tier_id")
+  // private VipTier activeVipTier;
 
-  @Column(name = "vip_expiry_date")
-  private LocalDateTime vipExpiryDate;
+  // ❌ REMOVE: Expiry logic (too complex for MVP)
+  // @Column(name = "vip_expiry_date")
+  // private LocalDateTime vipExpiryDate;
+
+  // ✅ ADD: Simple VIP flag (replaces complex tier logic)
+  @Column(name = "is_vip", nullable = false)
+  private boolean isVip = false;
 
   @Column(name = "created_at", updatable = false)
   private LocalDateTime createdAt = LocalDateTime.now();
@@ -53,12 +58,31 @@ public class User {
   }
 
   @ManyToMany(fetch = FetchType.EAGER)
-  @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+  @JoinTable(
+      name = "users_roles",
+      joinColumns = @JoinColumn(name = "user_id"),
+      inverseJoinColumns = @JoinColumn(name = "role_id"))
   private Set<Role> roles = new HashSet<>();
 
-  // Helper method
+  // ✅ UPDATED: Simple VIP check (no expiry logic needed for MVP)
   public boolean hasActiveVip() {
-    return activeVipTier != null
-        && (vipExpiryDate == null || vipExpiryDate.isAfter(LocalDateTime.now()));
+    return this.isVip;
   }
+
+  // ✅ HELPER: Add credits (simplified)
+  public void addCredits(int amount) {
+    this.creditBalance += amount;
+  }
+
+  // ✅ HELPER: Spend credits
+  public boolean spendCredits(int amount) {
+    if (this.creditBalance >= amount) {
+      this.creditBalance -= amount;
+      return true;
+    }
+    return false;
+  }
+
+  // === Getters & Setters ===
+  // (Use Lombok @Data or generate via IDE)
 }

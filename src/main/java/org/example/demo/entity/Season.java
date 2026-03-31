@@ -9,23 +9,23 @@ import java.util.List;
 @Entity
 @Data
 public class Season {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    private String seasonName; // "Season 1", "Heavenly Realm Arc"
-    private Integer seasonOrder;
+  private String seasonName; // "Season 1", "Heavenly Realm Arc"
+  private Integer seasonOrder;
 
-    @ManyToOne
-    @JoinColumn(name = "series_id")
-    private Series series;
+  @ManyToOne
+  @JoinColumn(name = "series_id")
+  private Series series;
 
-    @OneToMany(mappedBy = "season", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Episode> episodes = new ArrayList<>();
+  @OneToMany(mappedBy = "season", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<Episode> episodes = new ArrayList<>();
 
+  public void addEpisode(Episode episode) {
+    episodes.add(episode);
+    episode.setSeason(this);
+  }
 
-    public void addEpisode(Episode episode) {
-        episodes.add(episode);
-        episode.setSeason(this);
-    }
 }
