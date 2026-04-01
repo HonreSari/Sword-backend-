@@ -1,6 +1,7 @@
 package org.example.demo.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.demo.Dto.PageResponseDTO;
 import org.example.demo.Dto.series.SeriesDetailDTO;
 import org.example.demo.Dto.series.SeriesListDTO;
 import org.example.demo.entity.Series;
@@ -18,15 +19,16 @@ public class SeriesService {
 
   private final SeriesRepo seriesRepository;
 
-  // ✅ GET All Series (Paginated + Cached)
+  // ✅ CACHE PageResponseDTO (not Page<SeriesListDTO>)
   @Cacheable(value = "series:list", key = "#page + ':' + #size")
-  public Page<SeriesListDTO> getAllSeries(int page, int size) {
+  public PageResponseDTO<SeriesListDTO> getAllSeries(int page, int size) {
     Page<Series> entities = seriesRepository.findAll(
         PageRequest.of(page, size, Sort.by("createdAt").descending()));
-    return entities.map(SeriesListDTO::fromEntity);
+
+    // ✅ Convert Page → PageResponseDTO BEFORE caching
+    return PageResponseDTO.from(entities.map(SeriesListDTO::fromEntity));
   }
 
-  // ✅ Get Series by ID (Cached)
   @Cacheable(value = "series:detail", key = "#id")
   public SeriesDetailDTO getSeriesById(Long id) {
     Series series = seriesRepository.findByIdWithSeasonsAndEpisodes(id)

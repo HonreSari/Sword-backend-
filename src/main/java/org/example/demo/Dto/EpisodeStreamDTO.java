@@ -10,7 +10,7 @@ public record EpisodeStreamDTO(
     Integer episodeNumber,
     Long nextEpisodeId, // ✅ Optional: for auto-play next
     Long prevEpisodeId // ✅ Optional: for previous button
-) {
+    ) {
   public static EpisodeStreamDTO fromEntity(Episode episode) {
     return new EpisodeStreamDTO(
         episode.getId(),
@@ -20,6 +20,6 @@ public record EpisodeStreamDTO(
         episode.getEpisodeNumber(),
         null, // nextEpisodeId: compute in Service layer if needed
         null // prevEpisodeId: compute in Service layer if needed
-    );
+        );
   }
 }

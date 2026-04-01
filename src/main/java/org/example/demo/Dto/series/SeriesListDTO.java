@@ -1,9 +1,11 @@
 package org.example.demo.Dto.series;
 
-import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import java.util.ArrayList; // ✅ Add this import
 import java.util.List;
 import org.example.demo.entity.Series;
 
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@class")
 public record SeriesListDTO(
     Long id,
     String title,
@@ -12,25 +14,17 @@ public record SeriesListDTO(
     Double rating,
     String status,
     Integer totalEpisodes,
-    List<String> genres
-) implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-
-    /**
-     * Convert Series entity → SeriesListDTO
-     * Lightweight version for grid/home page display
-     */
-    public static SeriesListDTO fromEntity(Series series) {
-        return new SeriesListDTO(
-            series.getId(),
-            series.getTitle(),
-            series.getChineseTitle(),
-            series.getCoverImageUrl(),
-            series.getRating(),
-            series.getStatus(),
-            series.getTotalEpisodes(),
-            series.getGenres()
-        );
-    }
+    List<String> genres) {
+  public static SeriesListDTO fromEntity(Series series) {
+    return new SeriesListDTO(
+        series.getId(),
+        series.getTitle(),
+        series.getChineseTitle(),
+        series.getCoverImageUrl(),
+        series.getRating(),
+        series.getStatus(),
+        series.getTotalEpisodes(),
+        // ✅ FIX: Copy to new ArrayList (breaks Hibernate proxy link)
+        new ArrayList<>(series.getGenres()));
+  }
 }

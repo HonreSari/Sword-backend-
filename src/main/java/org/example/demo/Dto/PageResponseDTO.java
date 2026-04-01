@@ -1,8 +1,10 @@
 package org.example.demo.Dto;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import java.util.List;
 import org.springframework.data.domain.Page;
 
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@class")
 public record PageResponseDTO<T>(
     List<T> content,
     int pageNumber,
@@ -11,7 +13,6 @@ public record PageResponseDTO<T>(
     int totalPages,
     boolean isFirst,
     boolean isLast) {
-  // ✅ Static factory method for easy conversion from Spring Page
   public static <T> PageResponseDTO<T> from(Page<T> page) {
     return new PageResponseDTO<>(
         page.getContent(),

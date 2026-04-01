@@ -1,21 +1,21 @@
 package org.example.demo.Dto;
 
-import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.example.demo.entity.Episode;
 
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@class")
 public record EpisodeListItemDTO(
     Long id,
     String title,
-    String duration, // ✅ String like "24m" (matches entity)
-    Integer episodeNumber
-// ❌ Removed: thumbnailUrl, isPremium (entity doesn't have these)
-) implements Serializable {
-  private static final long serialVersionUID = 1L;
+    String duration,
+    Integer episodeNumber) {
   public static EpisodeListItemDTO fromEntity(Episode episode) {
     return new EpisodeListItemDTO(
         episode.getId(),
         episode.getTitle(),
         episode.getDuration(),
-        episode.getEpisodeNumber());
+        episode.getEpisodeNumber()
+    // ✅ No collections in this DTO, so no fix needed
+    );
   }
 }

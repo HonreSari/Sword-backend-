@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -21,7 +23,7 @@ public class Season {
   private Series series;
 
   @OneToMany(mappedBy = "season", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<Episode> episodes = new ArrayList<>();
+  private Set<Episode> episodes = new HashSet<>();
 
   public void addEpisode(Episode episode) {
     episodes.add(episode);

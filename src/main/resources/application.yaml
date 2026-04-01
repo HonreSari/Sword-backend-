@@ -7,23 +7,21 @@ spring:
     password: admin
   jpa:
     hibernate:
-      ddl-auto: update 
+      ddl-auto: update
     show-sql: true
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQLDialect
-  # --- CORRECTION START ---
   data:
     redis:
       host: localhost
       port: 6379
-      # password: your_password 
-  # --- CORRECTION END ---
+      # password: your_password
   cache:
-    type: simple 
+    type: redis # Changed from 'simple' to use Redis
     redis:
-      time-to-live: 1800000 # 30 minutes in milliseconds
-      cache-null-values: false # Good practice to avoid caching nulls
+      time-to-live: 1800000
+      cache-null-values: false
+jwt:
+  secret: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0e1f2" # Now properly nested
+  expiration: 86400000
 
 server:
   port: 8080
