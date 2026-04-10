@@ -14,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/progress")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*")
 public class UserProgressController {
 
   private final UserProgressService progressService;

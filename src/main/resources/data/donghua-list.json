@@ -1,0 +1,68 @@
+[
+  {
+    "FIELD1 ": 1,
+    "A ": "Title (EN) ",
+    "B ": "Title (CN) ",
+    "C ": "Cover Image URL ",
+    "D ": "Youtube URL ",
+    "E ": "Rating ",
+    "F ": "Status ",
+    "G ": "Total Ep ",
+    "H ": "Genres "
+  },
+  {
+    "FIELD1 ": 2,
+    "A ": "Soul Land ",
+    "B ": "斗罗大陆 ",
+    "C ": "https://res.cloudinary.com/dh3z96fyw/image/upload/v1775741403/Soul-Land_nydalz.jpg ",
+    "D ": "https://youtu.be/sry61pny9J0?list=PLMX26aiIvX5oBwyvcxES9P7OvCtHcPny5",
+    "E ": "9.5 ",
+    "F ": "Ongoing ",
+    "G ": "260 ",
+    "H ": "Action,Fantasy "
+  },
+  {
+    "FIELD1 ": 3,
+    "A ": "Battle Through The Heavens ",
+    "B ": "斗破苍穹 ",
+    "C ": "https://res.cloudinary.com/dh3z96fyw/image/upload/v1775741402/Btth_s3dbux.jpg ",
+    "D ": "https://youtu.be/rsz9uDGWqVY?list=PLwJAwkKCGfFPDvLbyGyvaQL7QbInYNOEe",
+    "E ": "9.2 ",
+    "F ": "Ongoing ",
+    "G ": "170 ",
+    "H ": "Action,Adventure "
+  },
+  {
+    "FIELD1 ": 4,
+    "A ": "Perfect World ",
+    "B ": "完美世界 ",
+    "C ": "https://res.cloudinary.com/dh3z96fyw/image/upload/v1775741402/PerfectWorld_i6txgh.jpg ",
+    "D ": "https://youtu.be/0CAxC_rmMws?list=PLAV8AqZgfhJsj7rduh5qK5EKxJwAd1wSV",
+    "E ": "9.0 ",
+    "F ": "Ongoing ",
+    "G ": "130 ",
+    "H ": "Fantasy,Martial Arts "
+  },
+  {
+    "FIELD1 ": 5,
+    "A ": "Swallowed Star ",
+    "B ": "吞噬星空 ",
+    "C ": "https://res.cloudinary.com/dh3z96fyw/image/upload/v1775741402/Swallowed-Star_zvejtm.jpg ",
+    "D ": "https://www.youtube.com/watch?v=QhPwEYX3u9c&list=PLAV8AqZgfhJv5JMxEzh_bpou2_Ogzaaac&index=2" ,
+    "E ": "8.8 ",
+    "F ": "Ongoing ",
+    "G ": "85 ",
+    "H ": "Sci-Fi,Action "
+  },
+  {
+    "FIELD1 ": 6,
+    "A ": "A Will Eternal ",
+    "B ": "一念永恒 ",
+    "C ": "https://res.cloudinary.com/dh3z96fyw/image/upload/v1775741819/A-Will-Eternal_jcv8bn.jpg ",
+    "D ": "https://www.youtube.com/watch?v=U9_cczDq07U&list=PLsiKVxjbhrsk0Tn0hWp4Eb4mqGIeqVVoQ",
+    "E ": "8.9 ",
+    "F ": "Completed ",
+    "G ": "52 ",
+    "H ": "Comedy,Fantasy "
+  }
+]

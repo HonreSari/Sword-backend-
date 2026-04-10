@@ -26,7 +26,6 @@ public class UserProgressService {
   private final UserRepository userRepository;
   private final EpisodeRepo episodeRepository;
 
-  // ✅ Save or update progress (upsert)
   @Transactional
   @CacheEvict(value = "user:progress", key = "#username")
   public UserProgressResponse saveProgress(String username, UserProgressRequest request) {

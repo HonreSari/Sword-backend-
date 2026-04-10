@@ -13,6 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/library")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*")
 public class LibraryController {
 
   private final LibraryService libraryService;
@@ -43,8 +44,27 @@ public class LibraryController {
   public ResponseEntity<List<SeriesListDTO>> getLibrary(
       @AuthenticationPrincipal UserDetails userDetails) {
 
+    System.out.println("🔍 [DEBUG] Controller hit! userDetails = " + userDetails);
+
+    if (userDetails == null) {
+      System.out.println("❌ [DEBUG] userDetails is null");
+      return ResponseEntity.status(401).build();
+    }
+
     String username = userDetails.getUsername();
-    return ResponseEntity.ok(libraryService.getLibraryByUsername(username));
+    System.out.println("🔍 [DEBUG] Username = " + username);
+
+    try {
+      System.out.println("🔍 [DEBUG] Calling service...");
+      List<SeriesListDTO> library = libraryService.getLibraryByUsername(username);
+      System.out.println("✅ [DEBUG] Service returned " + library.size() + " items");
+      return ResponseEntity.ok(library);
+    } catch (Exception e) {
+      System.err.println("❌ [DEBUG] EXCEPTION: " + e.getClass().getName());
+      System.err.println("❌ [DEBUG] Message: " + e.getMessage());
+      e.printStackTrace(); // ✅ This prints the full stack trace!
+      return ResponseEntity.status(500).build();
+    }
   }
 
   // ✅ Check if in library
