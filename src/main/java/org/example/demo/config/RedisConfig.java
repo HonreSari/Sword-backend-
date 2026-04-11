@@ -21,13 +21,27 @@ import java.time.Duration;
 @EnableCaching
 public class RedisConfig {
 
+  /**
+   * ✅ ObjectMapper WITH type info - used ONLY for Redis cache storage
+   * Uses Jackson 2.x because Spring Data Redis 4.0 still uses com.fasterxml.jackson
+   */
+  private ObjectMapper createRedisObjectMapper() {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JavaTimeModule());
+    mapper.activateDefaultTyping(
+        LaissezFaireSubTypeValidator.instance,
+        ObjectMapper.DefaultTyping.NON_FINAL,
+        JsonTypeInfo.As.PROPERTY);
+    return mapper;
+  }
+
   @Bean
   public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory connectionFactory) {
     RedisTemplate<String, Object> template = new RedisTemplate<>();
     template.setConnectionFactory(connectionFactory);
 
-    // ✅ Simple serializer that works with Records
-    GenericJackson2JsonRedisSerializer serializer = new GenericJackson2JsonRedisSerializer();
+    GenericJackson2JsonRedisSerializer serializer =
+        new GenericJackson2JsonRedisSerializer(createRedisObjectMapper());
 
     template.setKeySerializer(new StringRedisSerializer());
     template.setValueSerializer(serializer);
@@ -39,14 +53,8 @@ public class RedisConfig {
 
   @Bean
   public RedisCacheManager cacheManager(RedisConnectionFactory connectionFactory) {
-    ObjectMapper mapper = new ObjectMapper();
-    mapper.registerModule(new JavaTimeModule());
-    mapper.activateDefaultTyping(
-        LaissezFaireSubTypeValidator.instance,
-        ObjectMapper.DefaultTyping.NON_FINAL,
-        JsonTypeInfo.As.PROPERTY);
-
-    GenericJackson2JsonRedisSerializer serializer = new GenericJackson2JsonRedisSerializer(mapper);
+    GenericJackson2JsonRedisSerializer serializer =
+        new GenericJackson2JsonRedisSerializer(createRedisObjectMapper());
 
     RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()
         .entryTtl(Duration.ofMinutes(30))

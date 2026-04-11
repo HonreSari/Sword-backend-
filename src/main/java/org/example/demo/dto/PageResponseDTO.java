@@ -1,10 +1,8 @@
 package org.example.demo.dto;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import java.util.List;
 import org.springframework.data.domain.Page;
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@class")
 public record PageResponseDTO<T>(
     List<T> content,
     int pageNumber,

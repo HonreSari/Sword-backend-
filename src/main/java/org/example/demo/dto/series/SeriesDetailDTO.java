@@ -1,6 +1,5 @@
 package org.example.demo.dto.series;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -10,7 +9,6 @@ import org.example.demo.entity.Season;
 import org.example.demo.entity.Series;
 import org.example.demo.dto.EpisodeListItemDTO;
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@class")
 public record SeriesDetailDTO(
     Long id,
     String title,
@@ -21,7 +19,6 @@ public record SeriesDetailDTO(
     List<String> genres,
     List<SeasonDTO> seasons) {
 
-  @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@class")
   public record SeasonDTO(
       Integer seasonOrder,
       String seasonName,

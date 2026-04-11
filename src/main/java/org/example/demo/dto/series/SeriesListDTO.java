@@ -1,11 +1,9 @@
 package org.example.demo.dto.series;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import java.util.ArrayList; // ✅ Must import this
 import java.util.List;
 import org.example.demo.entity.Series;
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@class")
 public record SeriesListDTO(
     Long id,
     String title,

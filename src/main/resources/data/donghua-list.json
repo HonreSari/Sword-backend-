@@ -8,61 +8,68 @@
     "E ": "Rating ",
     "F ": "Status ",
     "G ": "Total Ep ",
-    "H ": "Genres "
+    "H ": "Genres ",
+    "I ": "Description "
   },
   {
     "FIELD1 ": 2,
     "A ": "Soul Land ",
     "B ": "斗罗大陆 ",
     "C ": "https://res.cloudinary.com/dh3z96fyw/image/upload/v1775741403/Soul-Land_nydalz.jpg ",
-    "D ": "https://youtu.be/sry61pny9J0?list=PLMX26aiIvX5oBwyvcxES9P7OvCtHcPny5",
+    "D ": "https://youtu.be/m6-xQpFtSBc",
     "E ": "9.5 ",
     "F ": "Ongoing ",
     "G ": "260 ",
-    "H ": "Action,Fantasy "
+    "H ": "Action,Fantasy ",
+    "I ": "Tang San reincarnates in a world of martial souls and seeks to reclaim his glory as a master craftsman and powerful soul master. "
   },
   {
     "FIELD1 ": 3,
     "A ": "Battle Through The Heavens ",
     "B ": "斗破苍穹 ",
     "C ": "https://res.cloudinary.com/dh3z96fyw/image/upload/v1775741402/Btth_s3dbux.jpg ",
-    "D ": "https://youtu.be/rsz9uDGWqVY?list=PLwJAwkKCGfFPDvLbyGyvaQL7QbInYNOEe",
+    "D ": "https://youtu.be/uDUVO9vfO-k",
     "E ": "9.2 ",
     "F ": "Ongoing ",
     "G ": "170 ",
-    "H ": "Action,Adventure "
+    "H ": "Action,Adventure ",
+    "I ": "Xiao Yan's journey from a fallen genius to the peak of cultivation, mastering the power of flames to protect those he loves. "
   },
   {
     "FIELD1 ": 4,
     "A ": "Perfect World ",
     "B ": "完美世界 ",
     "C ": "https://res.cloudinary.com/dh3z96fyw/image/upload/v1775741402/PerfectWorld_i6txgh.jpg ",
-    "D ": "https://youtu.be/0CAxC_rmMws?list=PLAV8AqZgfhJsj7rduh5qK5EKxJwAd1wSV",
+    "D ": "https://youtu.be/yLzAvZX3NAw",
     "E ": "9.0 ",
     "F ": "Ongoing ",
     "G ": "130 ",
-    "H ": "Fantasy,Martial Arts "
+    "H ": "Fantasy,Martial Arts ",
+    "I ": "Shi Hao, a child prodigy from the Great Wilderness, embarks on a legendary journey to become the strongest in a world of ancient beasts and cultivation. "
   },
   {
     "FIELD1 ": 5,
     "A ": "Swallowed Star ",
     "B ": "吞噬星空 ",
     "C ": "https://res.cloudinary.com/dh3z96fyw/image/upload/v1775741402/Swallowed-Star_zvejtm.jpg ",
-    "D ": "https://www.youtube.com/watch?v=QhPwEYX3u9c&list=PLAV8AqZgfhJv5JMxEzh_bpou2_Ogzaaac&index=2" ,
+    "D ": "https://youtu.be/pWme_YS_6VQ",
     "E ": "8.8 ",
     "F ": "Ongoing ",
     "G ": "85 ",
-    "H ": "Sci-Fi,Action "
+    "H ": "Sci-Fi,Action ",
+    "I ": "In a post-apocalyptic Earth, Luo Feng rises as a warrior to protect humanity from alien threats and cosmic dangers. "
   },
   {
     "FIELD1 ": 6,
     "A ": "A Will Eternal ",
     "B ": "一念永恒 ",
     "C ": "https://res.cloudinary.com/dh3z96fyw/image/upload/v1775741819/A-Will-Eternal_jcv8bn.jpg ",
-    "D ": "https://www.youtube.com/watch?v=U9_cczDq07U&list=PLsiKVxjbhrsk0Tn0hWp4Eb4mqGIeqVVoQ",
+    "D ": "https://youtu.be/GuDrgvexBHo",
     "E ": "8.9 ",
     "F ": "Completed ",
     "G ": "52 ",
-    "H ": "Comedy,Fantasy "
+    "H ": "Comedy,Fantasy ",
+    "I ": "Bai Xiaochun's hilarious and heartfelt journey through cultivation, where his fear of death leads to unexpected adventures and growth. "
   }
 ]
+

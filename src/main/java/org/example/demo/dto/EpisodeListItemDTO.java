@@ -1,9 +1,7 @@
 package org.example.demo.dto;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.example.demo.entity.Episode;
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@class")
 public record EpisodeListItemDTO(
     Long id,
     String title,
