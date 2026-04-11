@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.Cache;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.interceptor.CacheErrorHandler;
@@ -22,6 +23,7 @@ import java.time.Duration;
 
 @Configuration
 @EnableCaching
+@Slf4j
 public class RedisConfig {
 
   /**
@@ -33,8 +35,8 @@ public class RedisConfig {
     mapper.registerModule(new JavaTimeModule());
     mapper.activateDefaultTyping(
         LaissezFaireSubTypeValidator.instance,
-        ObjectMapper.DefaultTyping.EVERYTHING,
-        JsonTypeInfo.As.PROPERTY);
+        ObjectMapper.DefaultTyping.NON_FINAL,
+        JsonTypeInfo.As.WRAPPER_ARRAY);
     return mapper;
   }
 
@@ -52,24 +54,34 @@ public class RedisConfig {
       @Override
       public void handleCacheGetError(RuntimeException exception, Cache cache, Object key) {
         if (exception instanceof SerializationException) {
-          cache.evict(key);
+          log.warn("Redis serialization error for cache='{}', key='{}'. Evicting stale entry...",
+              cache.getName(), key);
+          try {
+            cache.evict(key);
+          } catch (Exception e) {
+            log.error("Failed to evict stale cache key: {}", key, e);
+          }
           return;
         }
+        log.error("Cache get error for cache='{}', key=''", cache.getName(), key, exception);
         throw exception;
       }
 
       @Override
       public void handleCachePutError(RuntimeException exception, Cache cache, Object key, Object value) {
+        log.error("Cache put error for cache='{}', key=''", cache.getName(), key, exception);
         throw exception;
       }
 
       @Override
       public void handleCacheEvictError(RuntimeException exception, Cache cache, Object key) {
+        log.error("Cache evict error for cache='{}', key=''", cache.getName(), key, exception);
         throw exception;
       }
 
       @Override
       public void handleCacheClearError(RuntimeException exception, Cache cache) {
+        log.error("Cache clear error for cache='{}'", cache.getName(), exception);
         throw exception;
       }
     };
