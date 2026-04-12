@@ -11,17 +11,17 @@ import lombok.*;
 @Builder
 @Table(name = "chapters")
 public class Chapter {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    private Integer chapterNumber;
-    private String title;
+  private Integer chapterNumber;
+  private String title;
 
-    @Column(columnDefinition = "TEXT")
-    private String content; // The actual novel text
+  @Column(columnDefinition = "TEXT")
+  private String content; // The actual novel text
 
-    @ManyToOne
-    @JoinColumn(name = "series_id")
-    private Series series;
+  @ManyToOne
+  @JoinColumn(name = "series_id")
+  private Series series;
 }

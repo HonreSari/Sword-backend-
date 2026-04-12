@@ -1,5 +1,7 @@
 package org.example.demo.service;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.example.demo.dto.progress.UserProgressRequest;
 import org.example.demo.dto.progress.UserProgressResponse;
@@ -15,9 +17,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 public class UserProgressService {
@@ -29,16 +28,21 @@ public class UserProgressService {
   @Transactional
   @CacheEvict(value = "user:progress", key = "#username")
   public UserProgressResponse saveProgress(String username, UserProgressRequest request) {
-    User user = userRepository.findByUsername(username)
-        .orElseThrow(() -> new ResourceNotFoundException("User", "username", username));
+    User user =
+        userRepository
+            .findByUsername(username)
+            .orElseThrow(() -> new ResourceNotFoundException("User", "username", username));
 
-    Episode episode = episodeRepository.findById(request.episodeId())
-        .orElseThrow(() -> new ResourceNotFoundException("Episode", "id", request.episodeId()));
+    Episode episode =
+        episodeRepository
+            .findById(request.episodeId())
+            .orElseThrow(() -> new ResourceNotFoundException("Episode", "id", request.episodeId()));
 
     // ✅ Upsert: find existing or create new
-    UserProgress progress = progressRepository
-        .findByUserIdAndEpisodeId(user.getId(), episode.getId())
-        .orElse(new UserProgress(null, user, episode, null, false, null, null, null));
+    UserProgress progress =
+        progressRepository
+            .findByUserIdAndEpisodeId(user.getId(), episode.getId())
+            .orElse(new UserProgress(null, user, episode, null, false, null, null, null));
 
     // ✅ Update fields
     progress.setWatchedDuration(request.watchedDuration());
@@ -55,11 +59,12 @@ public class UserProgressService {
   @Cacheable(value = "user:progress", key = "#username")
   @Transactional(readOnly = true)
   public List<UserProgressResponse> getProgressByUsername(String username) {
-    User user = userRepository.findByUsername(username)
-        .orElseThrow(() -> new ResourceNotFoundException("User", "username", username));
+    User user =
+        userRepository
+            .findByUsername(username)
+            .orElseThrow(() -> new ResourceNotFoundException("User", "username", username));
 
-    return progressRepository.findByUserIdWithDetails(user.getId())
-        .stream()
+    return progressRepository.findByUserIdWithDetails(user.getId()).stream()
         .map(p -> toResponse(p, p.getEpisode()))
         .toList();
   }
@@ -81,8 +86,7 @@ public class UserProgressService {
 
   // ✅ Helper: Parse "24m" → 1440 seconds
   private Integer parseDurationToSeconds(String duration) {
-    if (duration == null || duration.isEmpty())
-      return 0;
+    if (duration == null || duration.isEmpty()) return 0;
     try {
       if (duration.endsWith("m")) {
         return Integer.parseInt(duration.replace("m", "").trim()) * 60;
