@@ -20,17 +20,25 @@ public class SeriesService {
 
   private final SeriesRepo seriesRepository;
 
-  // ✅ CACHE PageResponseDTO (not Page<SeriesListDTO>)
+  // ✅ Existing: Get all series (paginated + cached)
   @Transactional(readOnly = true)
   @Cacheable(value = "series:list", key = "#page + ':' + #size")
   public PageResponseDTO<SeriesListDTO> getAllSeries(int page, int size) {
     Page<Series> entities =
         seriesRepository.findAll(PageRequest.of(page, size, Sort.by("createdAt").descending()));
-
-    // ✅ Convert Page → PageResponseDTO BEFORE caching
     return PageResponseDTO.from(entities.map(SeriesListDTO::fromEntity));
   }
 
+  // ✅ NEW: Search series (paginated + cached with query key)
+  @Transactional(readOnly = true)
+  @Cacheable(value = "series:search", key = "#query + ':' + #page + ':' + #size")
+  public PageResponseDTO<SeriesListDTO> searchSeries(String query, int page, int size) {
+    Page<Series> results =
+        seriesRepository.findByTitleOrChineseTitleContaining(query, PageRequest.of(page, size));
+    return PageResponseDTO.from(results.map(SeriesListDTO::fromEntity));
+  }
+
+  // ✅ Existing: Get series detail (cached)
   @Cacheable(value = "series:detail", key = "#id")
   public SeriesDetailDTO getSeriesById(Long id) {
     Series series =

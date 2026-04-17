@@ -1,7 +1,7 @@
 package org.example.demo.config;
 
-import tools.jackson.databind.JsonNode;
-import tools.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.InputStream;
 import java.util.*;
 import lombok.RequiredArgsConstructor;
@@ -43,9 +43,8 @@ public class DataSeeder implements CommandLineRunner {
         Series series = convertToEntity(node);
         seriesRepository.save(series);
         count++;
-        System.out.println("✅ Seeded: " + title);
       } catch (Exception e) {
-        System.err.println("❌ Failed to seed: " + title + " - " + e.getMessage());
+        System.err.println("❌ Failed to seed: " + title);
         e.printStackTrace();
       }
     }
@@ -55,11 +54,11 @@ public class DataSeeder implements CommandLineRunner {
   private Series convertToEntity(JsonNode node) {
     Series series = new Series();
 
-    // Extract data using exact keys from JSON (note trailing spaces)
     series.setTitle(getNodeText(node, "A "));
     series.setChineseTitle(getNodeText(node, "B "));
     series.setCoverImageUrl(getNodeText(node, "C "));
-    series.setDescription(getNodeText(node, "I ")); // ✅ NEW: Description from column I
+
+    series.setDescription(getNodeText(node, "I "));
 
     // Parse Rating
     try {
@@ -71,74 +70,67 @@ public class DataSeeder implements CommandLineRunner {
     series.setStatus(getNodeText(node, "F "));
 
     // Parse Total Episodes
+    int totalEpisodes = 0;
     try {
-      series.setTotalEpisodes(Integer.parseInt(getNodeText(node, "G ")));
+      totalEpisodes = Integer.parseInt(getNodeText(node, "G "));
     } catch (NumberFormatException e) {
-      series.setTotalEpisodes(0);
+      totalEpisodes = 0;
     }
+    series.setTotalEpisodes(totalEpisodes);
 
-    // Parse Genres (Split by comma)
+    // Parse Genres
     String genresStr = getNodeText(node, "H ");
     List<String> genres =
         Arrays.stream(genresStr.split(",")).map(String::trim).filter(s -> !s.isEmpty()).toList();
     series.setGenres(genres);
 
-    // --- Create Season & Episode ---
+    // --- 🔄 GENERATE EPISODES ---
+
+    // 1. Build Playlist URL from Column D
+    String rawUrl = getNodeText(node, "D ");
+    String videoUrl = "";
+    if (!rawUrl.isEmpty()) {
+      if (rawUrl.contains("youtu.be/")) {
+        // Convert short URL to embed format
+        String videoId = rawUrl.substring(rawUrl.lastIndexOf("/") + 1).split("\\?")[0];
+        videoUrl = "https://www.youtube.com/embed/" + videoId;
+      } else if (rawUrl.contains("youtube.com/watch?v=")) {
+        String videoId = rawUrl.split("v=")[1].split("&")[0];
+        videoUrl = "https://www.youtube.com/embed/" + videoId;
+      } else if (rawUrl.contains("/embed/")) {
+        videoUrl = rawUrl; // Already embed format
+      } else {
+        // Assume it's a playlist ID
+        videoUrl = "https://www.youtube.com/embed/videoseries?list=" + rawUrl;
+      }
+    } // 2. Create Season 1
     Season season = new Season();
     season.setSeasonName("Season 1");
     season.setSeasonOrder(1);
     season.setSeries(series);
 
-    Episode episode = new Episode();
-    episode.setTitle("Episode 1");
-    episode.setEpisodeNumber(1);
-    episode.setDuration("24m");
+    // 3. Create multiple episodes (Loop up to 10 for demo performance)
+    int episodesToCreate = Math.min(totalEpisodes, 10); // Cap at 10 episodes
+    if (episodesToCreate == 0) episodesToCreate = 1;
 
-    // ✅ Handle Full YouTube URL from column D
-    String youtubeUrl = getNodeText(node, "D ");
-    episode.setVideoUrl(convertToEmbedUrl(youtubeUrl));
+    Set<Episode> episodes = new HashSet<>();
+    for (int i = 1; i <= episodesToCreate; i++) {
+      Episode ep = new Episode();
+      ep.setTitle("Episode " + i);
+      ep.setEpisodeNumber(i);
+      ep.setDuration("24m");
+      // Point all episodes to the Playlist URL (User can switch videos inside the player)
+      ep.setVideoUrl(videoUrl);
+      ep.setSeason(season);
+      episodes.add(ep);
+    }
 
-    episode.setSeason(season);
-
-    // ✅ Use HashSet to match Set<Episode> in Entity
-    Set<Episode> episodeSet = new HashSet<>();
-    episodeSet.add(episode);
-    season.setEpisodes(episodeSet);
-
-    // ✅ Use HashSet to match Set<Season> in Entity
-    Set<Season> seasonSet = new HashSet<>();
-    seasonSet.add(season);
-    series.setSeasons(seasonSet);
+    season.setEpisodes(episodes);
+    series.setSeasons(new HashSet<>(List.of(season)));
 
     return series;
   }
 
-  // ✅ Helper: Convert YouTube URL to Embed format for iframe
-  private String convertToEmbedUrl(String youtubeUrl) {
-    if (youtubeUrl == null || youtubeUrl.isEmpty()) return "";
-
-    // Handle youtu.be short URLs: https://youtu.be/VIDEO_ID
-    if (youtubeUrl.contains("youtu.be/")) {
-      String videoId = youtubeUrl.substring(youtubeUrl.lastIndexOf("/") + 1).split("\\?")[0];
-      return "https://www.youtube.com/embed/" + videoId;
-    }
-
-    // Handle standard watch URLs: https://www.youtube.com/watch?v=VIDEO_ID
-    if (youtubeUrl.contains("youtube.com/watch?v=")) {
-      String videoId = youtubeUrl.split("v=")[1].split("&")[0];
-      return "https://www.youtube.com/embed/" + videoId;
-    }
-
-    // Already an embed URL or playlist
-    if (youtubeUrl.contains("/embed/")) {
-      return youtubeUrl;
-    }
-
-    // Fallback: return as-is
-    return youtubeUrl;
-  }
-
-  // ✅ Helper: Safely get text from JsonNode with trailing space keys
   private String getNodeText(JsonNode node, String key) {
     JsonNode field = node.get(key);
     if (field != null && field.isTextual()) {
@@ -147,4 +139,3 @@ public class DataSeeder implements CommandLineRunner {
     return "";
   }
 }
-
