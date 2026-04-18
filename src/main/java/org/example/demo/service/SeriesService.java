@@ -38,6 +38,14 @@ public class SeriesService {
     return PageResponseDTO.from(results.map(SeriesListDTO::fromEntity));
   }
 
+  // ✅ NEW: Filter by genre (paginated + cached)
+  @Transactional(readOnly = true)
+  @Cacheable(value = "series:genre", key = "#genre + ':' + #page + ':' + #size")
+  public PageResponseDTO<SeriesListDTO> getSeriesByGenre(String genre, int page, int size) {
+    Page<Series> results = seriesRepository.findByGenre(genre, PageRequest.of(page, size));
+    return PageResponseDTO.from(results.map(SeriesListDTO::fromEntity));
+  }
+
   // ✅ Existing: Get series detail (cached)
   @Cacheable(value = "series:detail", key = "#id")
   public SeriesDetailDTO getSeriesById(Long id) {

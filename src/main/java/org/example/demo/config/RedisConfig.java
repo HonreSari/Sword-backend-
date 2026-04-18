@@ -94,6 +94,7 @@ public class RedisConfig implements CachingConfigurer {
     cacheConfigs.put("user:library", config.entryTtl(Duration.ofMinutes(25)));
     cacheConfigs.put("user:progress", config.entryTtl(Duration.ofMinutes(10)));
     cacheConfigs.put("series:search", config.entryTtl(Duration.ofMinutes(15)));
+    cacheConfigs.put("series:genre", config.entryTtl(Duration.ofMinutes(30)));
 
     return RedisCacheManager.builder(connectionFactory)
         .cacheDefaults(config)

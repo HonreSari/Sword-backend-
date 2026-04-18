@@ -28,4 +28,8 @@ public interface SeriesRepo extends JpaRepository<Series, Long> {
           + "LOWER(s.chineseTitle) LIKE LOWER(CONCAT('%', :query, '%'))")
   Page<Series> findByTitleOrChineseTitleContaining(
       @Param("query") String query, PageRequest pageRequest);
+
+  // ✅ NEW: Filter by genre
+  @Query("SELECT s FROM Series s JOIN s.genres g WHERE LOWER(g) = LOWER(:genre)")
+  Page<Series> findByGenre(@Param("genre") String genre, PageRequest pageRequest);
 }

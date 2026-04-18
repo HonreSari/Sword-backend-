@@ -18,20 +18,24 @@ public class SeriesController {
 
   private final SeriesService seriesService;
 
-  // ✅ UPDATED: Handle optional search query parameter
+  // ✅ UPDATED: Handle optional search query and genre parameters
   @GetMapping
   public ResponseEntity<PageResponseDTO<SeriesListDTO>> listSeries(
       @RequestParam(defaultValue = "0") int page,
       @RequestParam(defaultValue = "12") int size,
-      @RequestParam(required = false) String q) { // ✅ Add search param
+      @RequestParam(required = false) String q,
+      @RequestParam(required = false) String genre) { // ✅ Add genre param
 
     PageResponseDTO<SeriesListDTO> result;
 
     if (q != null && !q.trim().isEmpty()) {
       // ✅ Use search endpoint if query provided
       result = seriesService.searchSeries(q.trim(), page, size);
+    } else if (genre != null && !genre.trim().isEmpty()) {
+      // ✅ Use genre endpoint if genre provided
+      result = seriesService.getSeriesByGenre(genre.trim(), page, size);
     } else {
-      // ✅ Use default endpoint if no query
+      // ✅ Use default endpoint if no query or genre
       result = seriesService.getAllSeries(page, size);
     }
 
